@@ -117,4 +117,128 @@ document.addEventListener('DOMContentLoaded', () => {
             return true; // Let browser submit to iframe
         });
     }
+
+    // --- Presentation Mode Logic ---
+    const presentationOverlay = document.getElementById('presentationOverlay');
+    const openPresBtns = document.querySelectorAll('.open-presentation');
+    const closePresBtn = document.querySelector('.close-presentation');
+    const prevBtn = document.querySelector('.prev-slide');
+    const nextBtn = document.querySelector('.next-slide');
+    const slides = document.querySelectorAll('.slide');
+    const slideCounter = document.querySelector('.slide-counter');
+    const progressBar = document.querySelector('.progress-bar');
+    const openModalFromPresBtn = document.querySelector('.open-modal-from-pres');
+    const soundToggle = document.querySelector('.sound-toggle');
+    const soundOnIcon = document.querySelector('.sound-on-icon');
+    const soundOffIcon = document.querySelector('.sound-off-icon');
+
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+    let isSoundEnabled = true;
+
+    // --- Audio System (Web Audio API) ---
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    const playNavigationSound = () => {
+        if (!isSoundEnabled) return;
+        
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(440, audioCtx.currentTime); // A4
+        oscillator.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.05);
+        
+        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.1);
+    };
+
+    const updatePresentation = (withSound = true) => {
+        slides.forEach((slide, index) => {
+            slide.classList.toggle('active', index === currentSlide);
+        });
+        
+        if (withSound) playNavigationSound();
+        
+        // Update Counter
+        if (slideCounter) slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+        
+        // Update Progress Bar
+        if (progressBar) {
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+    };
+
+    const openPresentation = () => {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        presentationOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        currentSlide = 0;
+        updatePresentation(false);
+    };
+
+    const closePresentation = () => {
+        presentationOverlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    };
+
+    const nextSlide = () => {
+        if (currentSlide < totalSlides - 1) {
+            currentSlide++;
+            updatePresentation();
+        }
+    };
+
+    const prevSlide = () => {
+        if (currentSlide > 0) {
+            currentSlide--;
+            updatePresentation();
+        }
+    };
+
+    // Event Listeners
+    openPresBtns.forEach(btn => btn.addEventListener('click', openPresentation));
+    if (closePresBtn) closePresBtn.addEventListener('click', closePresentation);
+    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+
+    // Sound Toggle Logic
+    if (soundToggle) {
+        soundToggle.addEventListener('click', () => {
+            isSoundEnabled = !isSoundEnabled;
+            soundOnIcon.style.display = isSoundEnabled ? 'block' : 'none';
+            soundOffIcon.style.display = isSoundEnabled ? 'none' : 'block';
+            if (isSoundEnabled) playNavigationSound();
+        });
+    }
+
+    // Keyboard Navigation
+    document.addEventListener('keydown', (e) => {
+        if (!presentationOverlay.classList.contains('active')) return;
+        
+        if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+        if (e.key === 'ArrowLeft') prevSlide();
+        if (e.key === 'Escape') closePresentation();
+    });
+
+    // Special: Open contact modal from presentation
+    if (openModalFromPresBtn) {
+        openModalFromPresBtn.addEventListener('click', () => {
+            closePresentation();
+            setTimeout(() => {
+                const modal = document.getElementById('contactModal');
+                if (modal) {
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            }, 500);
+        });
+    }
 });

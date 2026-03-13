@@ -23,7 +23,9 @@
                 <li><a href="#proceso">Cómo Funciona</a></li>
                 <li><a href="#beneficios">Beneficios</a></li>
             </ul>
-            <a href="javascript:void(0)" class="btn btn-primary open-modal" style="padding: 0.5rem 1.5rem; font-size: 0.9rem;">Empezar</a>
+            <div class="nav-actions" style="display: flex; gap: 1rem; align-items: center;">
+                <a href="javascript:void(0)" class="btn btn-primary open-modal" style="padding: 0.5rem 1.5rem; font-size: 0.9rem;">Empezar</a>
+            </div>
         </div>
     </nav>
 
@@ -33,8 +35,21 @@
                 <div class="hero-text">
                     <h1>Gestión de crédito y cobranzas para el pequeño comercio</h1>
                     <p>Transforma tus libretas de fiado en ingresos seguros, controlados y profesionales.</p>
-                    <div class="hero-btns">
+                    <div class="hero-btns" style="display: flex; align-items: center; gap: 1.5rem;">
                         <a href="javascript:void(0)" class="btn btn-primary open-modal">Moderniza tu negocio hoy</a>
+                        <a href="javascript:void(0)" class="btn-cinema open-presentation" title="Ver Presentación Premium">
+                            <span class="pulse-ring"></span>
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+                                <line x1="7" y1="2" x2="7" y2="22"></line>
+                                <line x1="17" y1="2" x2="17" y2="22"></line>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <line x1="2" y1="7" x2="7" y2="7"></line>
+                                <line x1="2" y1="17" x2="7" y2="17"></line>
+                                <line x1="17" y1="17" x2="22" y2="17"></line>
+                                <line x1="17" y1="7" x2="22" y2="7"></line>
+                            </svg>
+                        </a>
                     </div>
                 </div>
                 <div class="hero-image">
@@ -61,7 +76,7 @@
                         </ul>
                     </div>
                     <div id="solucion" class="compare-card after reveal">
-                        <img src="assets/app-solution.png" alt="Revolución Cobrix" class="card-image">
+                        <img src="assets/app-solution-branded.png" alt="Revolución Cobrix" class="card-image">
                         <h3>LA REVOLUCIÓN COBRIX</h3>
                         <ul class="compare-list">
                             <li>Registro digital simplificado</li>
@@ -253,6 +268,135 @@
                 <h3 style="color: var(--primary); margin-bottom: 1rem;">¡Solicitud Procesada!</h3>
                 <p style="color: var(--slate); margin-bottom: 1.5rem;">Tus datos han sido enviados correctamente. Un asesor se pondrá en contacto contigo a la brevedad.</p>
                 <button type="button" class="btn btn-primary close-modal-success">Finalizar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay de Presentación Premium -->
+    <div id="presentationOverlay" class="presentation-overlay">
+        <div class="presentation-header">
+            <div class="presentation-logo">
+                <svg width="120" height="32" viewBox="0 0 150 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 35C11.7157 35 5 28.2843 5 20C5 11.7157 11.7157 5 20 5C24.1421 5 27.8921 6.67893 30.6066 9.3934M35 15L25 25L18 18" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <text x="45" y="28" font-family="Outfit" font-weight="700" font-size="24" fill="white">COBRIX</text>
+                </svg>
+            </div>
+            <div class="presentation-header-actions" style="display: flex; gap: 1.5rem; align-items: center;">
+                <button class="sound-toggle" title="Alternar Sonido">
+                    <svg class="sound-on-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    <svg class="sound-off-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <line x1="23" y1="9" x2="17" y2="15"></line>
+                        <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                </button>
+                <button class="close-presentation">&times;</button>
+            </div>
+        </div>
+
+        <div class="slides-container">
+            <!-- Slide 1: Intro -->
+            <div class="slide active" data-slide="0">
+                <div class="slide-content centered">
+                    <h1 class="animate-up">COBRIX</h1>
+                    <h2 class="animate-up delay-1">El futuro del comercio de cercanía</h2>
+                    <p class="animate-up delay-2">Transformando la confianza en rentabilidad profesional.</p>
+                </div>
+            </div>
+
+            <!-- Slide 2: El Problema -->
+            <div class="slide" data-slide="1">
+                <div class="slide-content split">
+                    <div class="slide-text">
+                        <h2 class="animate-left">El Problema: La Libreta</h2>
+                        <ul class="animate-left delay-1">
+                            <li>Fugas de capital por olvidos.</li>
+                            <li>Tiempo perdido en cobranzas manuales.</li>
+                            <li>Informalidad que frena el crecimiento.</li>
+                            <li>Estrés financiero para el comerciante.</li>
+                        </ul>
+                    </div>
+                    <div class="slide-visual animate-right delay-2">
+                        <img src="assets/notebook.png" alt="Libreta tradicional">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: La Solución -->
+            <div class="slide" data-slide="2">
+                <div class="slide-content split">
+                    <div class="slide-visual animate-left delay-1">
+                        <img src="assets/app-solution-branded.png" alt="Solución Digital">
+                    </div>
+                    <div class="slide-text">
+                        <h2 class="animate-right">La Solución: Cobrix</h2>
+                        <ul class="animate-right delay-2">
+                            <li>Digitalización instantánea del fiado.</li>
+                            <li>Recordatorios automáticos.</li>
+                            <li>Control total desde la palma de tu mano.</li>
+                            <li>Respaldo profesional de BRANAVI.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: El Proceso -->
+            <div class="slide" data-slide="3">
+                <div class="slide-content centered">
+                    <h2 class="animate-up">¿Cómo funciona?</h2>
+                    <div class="process-grid">
+                        <div class="process-item animate-up delay-1">
+                            <div class="process-icon">1</div>
+                            <p>Registras la venta</p>
+                        </div>
+                        <div class="process-item animate-up delay-2">
+                            <div class="process-icon">2</div>
+                            <p>Cobrix avisa al cliente</p>
+                        </div>
+                        <div class="process-item animate-up delay-3">
+                            <div class="process-icon">3</div>
+                            <p>Recuperas tu dinero</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: El Respaldo -->
+            <div class="slide" data-slide="4">
+                <div class="slide-content centered">
+                    <div class="branavi-logo animate-scale">
+                        <h3>Respaldado por <strong>BRANAVI</strong></h3>
+                    </div>
+                    <p class="animate-up delay-1">Más de 10 años liderando la gestión de cobranzas profesional.</p>
+                    <div class="trust-icons animate-up delay-2">
+                        <span>Seguridad SSL</span>
+                        <span>Transparencia</span>
+                        <span>Ética</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: CTA -->
+            <div class="slide" data-slide="5">
+                <div class="slide-content centered">
+                    <h2 class="animate-up">Es hora de modernizarte</h2>
+                    <button class="btn btn-primary open-modal-from-pres animate-up delay-1">Quiero empezar ahora</button>
+                    <p class="animate-up delay-2" style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.7;">O vuelve a la web para ver más detalles.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="presentation-footer">
+            <div class="progress-bar-container">
+                <div class="progress-bar"></div>
+            </div>
+            <div class="presentation-controls">
+                <button class="pres-btn prev-slide">&larr;</button>
+                <div class="slide-counter">1 / 6</div>
+                <button class="pres-btn next-slide">&rarr;</button>
             </div>
         </div>
     </div>
