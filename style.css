@@ -89,7 +89,8 @@ ul {
 .btn-secondary {
     background: transparent;
     color: var(--primary);
-    border: 2px solid var(--primary);
+    border: 2px solid var(--primary) !important; /* Force border visibility */
+    display: inline-block;
 }
 
 .btn-secondary:hover {
