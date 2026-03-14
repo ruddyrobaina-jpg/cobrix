@@ -9,12 +9,27 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Botón de Cine (Presentación) - Movido arriba a la derecha -->
+    <a href="javascript:void(0)" class="btn-cinema open-presentation fixed-cinema" title="Ver Presentación Premium">
+        <span class="pulse-ring"></span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+            <line x1="7" y1="2" x2="7" y2="22"></line>
+            <line x1="17" y1="2" x2="17" y2="22"></line>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <line x1="2" y1="7" x2="7" y2="7"></line>
+            <line x1="2" y1="17" x2="7" y2="17"></line>
+            <line x1="17" y1="17" x2="22" y2="17"></line>
+            <line x1="17" y1="7" x2="22" y2="7"></line>
+        </svg>
+    </a>
     <nav>
         <div class="container nav-content">
             <div class="logo-placeholder">
-                <svg width="150" height="40" viewBox="0 0 150 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 35C11.7157 35 5 28.2843 5 20C5 11.7157 11.7157 5 20 5C24.1421 5 27.8921 6.67893 30.6066 9.3934M35 15L25 25L18 18" stroke="#004a8d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                    <text x="45" y="28" font-family="Outfit" font-weight="700" font-size="24" fill="#004a8d">COBRIX</text>
+                <svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 38C13.7157 38 7 31.2843 7 23C7 14.7157 13.7157 8 22 8C26.1421 8 29.8921 9.67893 32.6066 12.3934M37 18L27 28L20 21" stroke="#004a8d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <text x="48" y="28" font-family="Outfit" font-weight="700" font-size="24" fill="#004a8d">COBRIX</text>
+                    <text x="48" y="48" font-family="Outfit" font-weight="600" font-size="16" fill="#ffb347">Libreta Digital</text>
                 </svg>
             </div>
             <ul class="nav-links">
@@ -37,23 +52,11 @@
                     <p>Transforma tus libretas de fiado en ingresos seguros, controlados y profesionales.</p>
                     <div class="hero-btns" style="display: flex; align-items: center; gap: 1.5rem;">
                         <a href="javascript:void(0)" class="btn btn-primary open-modal">Moderniza tu negocio hoy</a>
-                        <a href="javascript:void(0)" class="btn-cinema open-presentation" title="Ver Presentación Premium">
-                            <span class="pulse-ring"></span>
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
-                                <line x1="7" y1="2" x2="7" y2="22"></line>
-                                <line x1="17" y1="2" x2="17" y2="22"></line>
-                                <line x1="2" y1="12" x2="22" y2="12"></line>
-                                <line x1="2" y1="7" x2="7" y2="7"></line>
-                                <line x1="2" y1="17" x2="7" y2="17"></line>
-                                <line x1="17" y1="17" x2="22" y2="17"></line>
-                                <line x1="17" y1="7" x2="22" y2="7"></line>
-                            </svg>
-                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.cobrix" class="btn btn-secondary" target="_blank">Descargar App</a>
                     </div>
                 </div>
                 <div class="hero-image">
-                    <img src="assets/hero-merchant.png" alt="Comerciante exitoso con Cobrix">
+                    <img src="assets/diverse_workers.png" alt="Diversos trabajadores modernizando su negocio con Cobrix">
                 </div>
             </div>
         </section>
@@ -276,9 +279,10 @@
     <div id="presentationOverlay" class="presentation-overlay">
         <div class="presentation-header">
             <div class="presentation-logo">
-                <svg width="120" height="32" viewBox="0 0 150 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 35C11.7157 35 5 28.2843 5 20C5 11.7157 11.7157 5 20 5C24.1421 5 27.8921 6.67893 30.6066 9.3934M35 15L25 25L18 18" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                    <text x="45" y="28" font-family="Outfit" font-weight="700" font-size="24" fill="white">COBRIX</text>
+                <svg width="180" height="55" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 38C13.7157 38 7 31.2843 7 23C7 14.7157 13.7157 8 22 8C26.1421 8 29.8921 9.67893 32.6066 12.3934M37 18L27 28L20 21" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <text x="48" y="28" font-family="Outfit" font-weight="700" font-size="24" fill="white">COBRIX</text>
+                    <text x="48" y="48" font-family="Outfit" font-weight="600" font-size="16" fill="#ffb347" opacity="0.9">Libreta Digital</text>
                 </svg>
             </div>
             <div class="presentation-header-actions" style="display: flex; gap: 1.5rem; align-items: center;">
