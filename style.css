@@ -1033,34 +1033,59 @@ footer {
 
 @media (max-width: 768px) {
     .slide {
-        padding: 1.5rem;
+        padding: 0.5rem 1.2rem;
         flex-direction: column;
-        justify-content: flex-start;
-        overflow-y: auto; /* Allow scrolling if content is too tall */
-        padding-top: 5rem;
-        padding-bottom: 5rem;
+        justify-content: center;
+        overflow: hidden;
     }
-    .slide h1 { font-size: 2.2rem; }
-    .slide h2 { font-size: 1.5rem; }
-    .slide p { font-size: 1.1rem; }
+    .slide h1 { font-size: 1.8rem; margin-bottom: 0.5rem; letter-spacing: 2px; }
+    .slide h2 { font-size: 1.3rem; margin-bottom: 1rem; }
+    .slide p { font-size: 0.95rem; line-height: 1.4; }
+    .slide-text ul { font-size: 0.85rem; }
+    .slide-text li { margin-bottom: 0.6rem; gap: 10px; }
+    
+    .slide-content.centered {
+        max-width: 100%;
+    }
     .slide-content.split {
         grid-template-columns: 1fr;
         text-align: center;
         width: 100%;
     }
     .slide-visual { display: none; }
+    
     .process-grid {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: 0.5rem;
+        margin-top: 1rem;
     }
-    .presentation-header {
+    .process-item {
         padding: 1rem;
+        border-radius: 12px;
+    }
+    .process-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .presentation-header {
+        padding: 0.5rem 1rem;
     }
     .presentation-footer {
-        padding: 1rem;
+        padding: 0.8rem 1rem;
     }
     .presentation-logo svg {
-        width: 140px;
+        width: 110px;
         height: auto;
+    }
+    .presentation-controls {
+        gap: 1rem;
+    }
+    .pres-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
     }
 }
