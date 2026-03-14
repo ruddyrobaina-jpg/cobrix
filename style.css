@@ -657,28 +657,21 @@ footer {
 
 .btn-cinema {
     position: relative;
-    width: 60px;
-    height: 60px;
+    width: 45px;
+    height: 45px;
     background: white;
     color: var(--primary);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     transition: var(--transition);
     cursor: pointer;
     z-index: 1;
 }
 
-.fixed-cinema {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    z-index: 2001; /* Por encima de la nav pero debajo de modales */
-}
+/* Removed fixed-cinema as it's now integrated in nav */
 
 .btn-cinema:hover {
     transform: scale(1.1);
@@ -1040,17 +1033,34 @@ footer {
 
 @media (max-width: 768px) {
     .slide {
-        padding: 2rem;
+        padding: 1.5rem;
+        flex-direction: column;
+        justify-content: flex-start;
+        overflow-y: auto; /* Allow scrolling if content is too tall */
+        padding-top: 5rem;
+        padding-bottom: 5rem;
     }
-    .slide h1 { font-size: 3rem; }
-    .slide h2 { font-size: 1.8rem; }
+    .slide h1 { font-size: 2.2rem; }
+    .slide h2 { font-size: 1.5rem; }
+    .slide p { font-size: 1.1rem; }
     .slide-content.split {
         grid-template-columns: 1fr;
         text-align: center;
+        width: 100%;
     }
     .slide-visual { display: none; }
     .process-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
+    }
+    .presentation-header {
+        padding: 1rem;
+    }
+    .presentation-footer {
+        padding: 1rem;
+    }
+    .presentation-logo svg {
+        width: 140px;
+        height: auto;
     }
 }
