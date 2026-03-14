@@ -553,6 +553,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 20px; /* Safe space for mobile */
     opacity: 0;
     visibility: hidden;
     transition: var(--transition);
@@ -566,11 +567,13 @@ footer {
 
 .notepad {
     background: #fff;
-    width: 90%;
+    width: 100%;
     max-width: 500px;
     padding: 3rem;
     border-radius: 30px;
     position: relative;
+    max-height: 90vh; /* Font fitting */
+    overflow-y: auto; /* Scroll if content overflows */
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
     background-image: linear-gradient(var(--light) 1px, transparent 1px);
     background-size: 100% 30px;
@@ -1076,16 +1079,24 @@ footer {
     .presentation-footer {
         padding: 0.8rem 1rem;
     }
-    .presentation-logo svg {
-        width: 110px;
-        height: auto;
+    /* Modal adjustments on mobile */
+    .notepad {
+        padding: 1.5rem 1rem 1.5rem 2.5rem;
+        border-radius: 20px;
     }
-    .presentation-controls {
-        gap: 1rem;
+    .notepad::before {
+        left: 30px;
     }
-    .pres-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
+    .notepad-header {
+        margin-bottom: 1rem;
+    }
+    .notepad-header h2 {
+        font-size: 1.5rem;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    .form-group input {
+        padding: 0.6rem 0.8rem;
     }
 }
