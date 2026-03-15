@@ -143,6 +143,26 @@ nav {
     background: rgba(0, 74, 141, 0.08); /* Burbuja azul transparente */
 }
 
+/* Logo Interaction */
+.logo-link {
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.logo-link:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.logo-link:active {
+    transform: translateY(0);
+}
+
+.logo-placeholder {
+    transition: transform 0.3s ease;
+}
+
 /* Hero Section */
 .hero {
     height: 100vh;
