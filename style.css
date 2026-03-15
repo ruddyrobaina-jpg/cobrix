@@ -698,8 +698,10 @@ footer {
 }
 
 @media (max-width: 768px) {
+    /* Eliminar display: none que ocultaba los links */
     .nav-links {
-        display: none;
+        display: flex;
+        gap: 0.8rem;
     }
     
     /* Logo scaling on mobile */
@@ -1100,28 +1102,31 @@ footer {
         padding: 0.6rem 0.8rem;
     }
 
-    /* Show links on mobile as an inline scrollable list */
+    /* Garantizar visibilidad de enlaces en móvil */
     .nav-links {
         display: flex !important;
         position: static;
         flex-direction: row;
-        gap: 1rem;
+        gap: 0.8rem;
         overflow-x: auto;
-        padding-bottom: 5px;
+        padding: 5px 0;
         -webkit-overflow-scrolling: touch;
-        scrollbar-width: none; /* Hide scrollbar Firefox */
+        scrollbar-width: none;
         width: 100%;
         justify-content: center;
         margin-top: 0.5rem;
     }
-    .nav-links::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome/Safari */
+    .nav-links::-webkit-scrollbar { display: none; }
 
     .nav-links li {
         white-space: nowrap;
     }
 
     .nav-links li a {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
+        padding: 5px 10px;
+        background: rgba(0, 74, 141, 0.05);
+        border-radius: 15px;
     }
 
     .nav-content {
@@ -1133,6 +1138,8 @@ footer {
     .nav-actions {
         margin-top: 0.5rem;
         gap: 0.5rem;
+        width: 100%;
+        justify-content: center;
     }
 }
 /* Quick Guide Modal */
