@@ -1104,28 +1104,28 @@ footer {
         padding: 0.6rem 0.8rem;
     }
 
-    /* Cabezal compacto y Logo a la Izquierda */
+    /* Cabezal compacto y Logo Restaurado */
     .nav-content {
         flex-direction: row !important;
         justify-content: space-between !important;
-        padding: 0.4rem 1rem !important;
-        height: 60px !important;
+        padding: 0.5rem 1.5rem !important;
+        height: 70px !important;
     }
 
     .nav-links {
         display: flex !important;
         visibility: visible !important;
         position: absolute !important;
-        top: 60px;
+        top: 70px;
         left: 0;
         width: 100% !important;
-        background: white !important;
-        padding: 8px 1rem !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(5px);
+        padding: 10px 1rem !important;
         justify-content: center !important;
-        gap: 0.5rem !important;
+        gap: 0.8rem !important;
         border-bottom: 1px solid rgba(0,0,0,0.05);
         margin-top: 0 !important;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
     /* Ocultar enlace específico en móvil */
@@ -1134,42 +1134,47 @@ footer {
     }
 
     .nav-links li a {
-        font-size: 0.8rem !important;
-        padding: 4px 8px !important;
+        font-size: 0.85rem !important;
+        padding: 4px 6px !important;
         background: transparent !important;
         border: none !important;
         color: var(--slate) !important;
         border-radius: 0 !important;
+        white-space: nowrap !important;
     }
 
-    /* Guía Rápida normalizado */
+    /* Guía Rápida normalizado (igual que los otros) */
     .nav-links a.open-guide-modal {
         background: transparent !important;
-        color: var(--primary) !important;
-        font-weight: 600 !important;
+        color: var(--slate) !important;
+        font-weight: 500 !important;
         box-shadow: none !important;
-        border-bottom: 2px solid var(--primary) !important;
+        border: none !important;
         border-radius: 0 !important;
+    }
+
+    .nav-links a.open-guide-modal:hover {
+        color: var(--primary) !important;
     }
 
     .nav-actions {
         margin-top: 0 !important;
-        gap: 0.5rem !important;
+        gap: 0.8rem !important;
         width: auto !important;
     }
 
     .nav-actions .btn {
-        padding: 0.4rem 1rem !important;
-        font-size: 0.8rem !important;
+        padding: 0.5rem 1.2rem !important;
+        font-size: 0.9rem !important;
     }
 
     .btn-cinema {
-        width: 35px !important;
-        height: 35px !important;
+        width: 40px !important;
+        height: 40px !important;
     }
 
     .logo {
-        height: 30px !important;
+        height: 40px !important;
     }
 }
 /* Quick Guide Modal */
