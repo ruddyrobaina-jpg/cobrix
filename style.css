@@ -1104,19 +1104,19 @@ footer {
         padding: 0.6rem 0.8rem;
     }
 
-    /* Cabezal compacto y Logo Restaurado (v20) */
+    /* Cabezal compacto y Logo Restaurado (v21) */
     .nav-content {
         flex-direction: row !important;
         justify-content: space-between !important;
         padding: 0.4rem 1.2rem !important;
-        height: 75px !important;
+        height: 85px !important;
     }
 
     .nav-links {
         display: flex !important;
         visibility: visible !important;
         position: absolute !important;
-        top: 75px;
+        top: 85px;
         left: 0;
         width: 100% !important;
         background: rgba(255, 255, 255, 0.98) !important;
@@ -1171,7 +1171,7 @@ footer {
     }
 
     .logo {
-        height: 50px !important;
+        height: 60px !important;
     }
 }
 /* Quick Guide Modal */
