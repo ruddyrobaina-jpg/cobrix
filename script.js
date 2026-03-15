@@ -241,4 +241,31 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 500);
         });
     }
+
+    // --- Quick Guide Modal Logic ---
+    const guideModal = document.getElementById('guideModal');
+    const openGuideBtn = document.querySelector('.open-guide-modal');
+    const closeGuideBtn = document.querySelector('.close-guide-modal');
+
+    if (guideModal && openGuideBtn && closeGuideBtn) {
+        openGuideBtn.addEventListener('click', () => {
+            guideModal.classList.add('active');
+            guideModal.style.display = 'flex'; // Ensure flex for centering
+            document.body.style.overflow = 'hidden';
+        });
+
+        const closeGuide = () => {
+            guideModal.classList.remove('active');
+            setTimeout(() => {
+                guideModal.style.display = 'none';
+            }, 500);
+            document.body.style.overflow = 'auto';
+        };
+
+        closeGuideBtn.addEventListener('click', closeGuide);
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === guideModal) closeGuide();
+        });
+    }
 });
