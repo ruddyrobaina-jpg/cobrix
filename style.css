@@ -1104,7 +1104,7 @@ footer {
         padding: 0.6rem 0.8rem;
     }
 
-    /* Garantizar visibilidad y stack vertical en móvil */
+    /* Eliminar scroll y forzar que todo se vea de una vez */
     .nav-links {
         display: flex !important;
         visibility: visible !important;
@@ -1115,7 +1115,8 @@ footer {
         padding: 5px 0 !important;
         width: 100% !important;
         justify-content: center !important;
-        margin-top: 0.8rem !important;
+        margin-top: 0.5rem !important;
+        overflow-x: visible !important; /* No permitir scroll oculto */
     }
 
     .nav-links li {
@@ -1123,13 +1124,23 @@ footer {
     }
 
     .nav-links li a {
-        font-size: 0.8rem !important;
-        padding: 6px 12px !important;
-        background: rgba(0, 74, 141, 0.1) !important;
-        border: 1px solid rgba(0, 74, 141, 0.2) !important;
-        border-radius: 12px !important;
+        font-size: 0.75rem !important;
+        padding: 6px 10px !important;
+        background: rgba(0, 74, 141, 0.05) !important;
+        border: 1px solid rgba(0, 74, 141, 0.1) !important;
+        border-radius: 10px !important;
         color: var(--primary) !important;
         display: block !important;
+        white-space: nowrap;
+    }
+
+    /* Resaltar Guía Rápida especialmente en móvil */
+    .nav-links a.open-guide-modal {
+        background: var(--primary) !important;
+        color: white !important;
+        font-weight: 700 !important;
+        border-color: var(--primary) !important;
+        box-shadow: 0 4px 10px rgba(0, 74, 141, 0.2);
     }
 
     .nav-content {
