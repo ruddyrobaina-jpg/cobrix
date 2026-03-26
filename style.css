@@ -731,9 +731,25 @@ footer {
         max-width: 100vw;
     }
     
-    /* Eliminar la franja de doble ancho ocultando los textos en celular */
+    /* Mostrar los enlaces móviles con fondo blanco y texto oscuro por petición del usuario */
     .nav-links {
-        display: none !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        background: white; /* Franja blanca intencional */
+        padding: 5px 0;
+        border-radius: 0 0 15px 15px;
+    }
+    
+    .nav-links a {
+        font-size: 0.85rem;
+        padding: 5px 8px;
+        color: #0a0e12 !important; /* Texto oscuro para legibilidad perfecta */
+        font-weight: 600;
     }
     
     /* Logo scaling on mobile */
