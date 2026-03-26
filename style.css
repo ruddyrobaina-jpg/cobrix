@@ -731,23 +731,9 @@ footer {
         max-width: 100vw;
     }
     
-    /* Ocultar enlaces de texto para no romper la navbar en móviles */
+    /* Eliminar la franja de doble ancho ocultando los textos en celular */
     .nav-links {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.5rem;
-        width: 100%;
-        background: var(--dark); /* Fuerza el fondo ocuro si hay desbordamiento */
-        padding: 5px 0;
-        border-radius: 10px;
-    }
-    
-    .nav-links a {
-        font-size: 0.85rem; /* Letra un poco más chica para que entren mejor */
-        padding: 5px 8px;
+        display: none !important;
     }
     
     /* Logo scaling on mobile */
@@ -782,11 +768,16 @@ footer {
     }
     .hero-btns {
         flex-direction: column;
-        align-items: stretch !important;
+        align-items: center !important; /* Centrar elementos en vez de estirar la imagen */
         gap: 1rem !important;
     }
     .hero-btns .btn {
         width: 100%;
+    }
+    .hero-btns .play-badge img {
+        height: auto;
+        max-width: 200px; /* Tamaño proporcionado para celular */
+        margin: 0 auto;
     }
 
     .process-steps {
