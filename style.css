@@ -733,7 +733,21 @@ footer {
     
     /* Ocultar enlaces de texto para no romper la navbar en móviles */
     .nav-links {
-        display: none !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        background: var(--dark); /* Fuerza el fondo ocuro si hay desbordamiento */
+        padding: 5px 0;
+        border-radius: 10px;
+    }
+    
+    .nav-links a {
+        font-size: 0.85rem; /* Letra un poco más chica para que entren mejor */
+        padding: 5px 8px;
     }
     
     /* Logo scaling on mobile */
