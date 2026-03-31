@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COBRIX | Portal Operativo – BRANAVI</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2e1c5b;
+            --primary-light: #52319c;
+            --accent: #ffb347;
+            --dark: #120b24;
+            --dark-surface: #1b1033;
+            --surface2: #241747;
+            --gray: #a0aec0;
+            --slate: #e2e8f0;
+            --glass: rgba(255,255,255,0.05);
+            --glass-border: rgba(255,255,255,0.08);
+            --red: #ff4757;
+            --green: #2ed573;
+            --yellow: #ffb347;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Outfit',sans-serif; background:var(--dark); color:var(--slate); min-height:100vh; display:flex; flex-direction:column; }
+
+        /* ── Auth Overlay ── */
+        #authOverlay {
+            position:fixed; inset:0; background:var(--dark); z-index:9999;
+            display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem;
+        }
+        .spinner { width:40px; height:40px; border:4px solid rgba(255,255,255,0.1); border-top-color:var(--accent); border-radius:50%; animation:spin 1s linear infinite; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+
+        /* ── Top Nav ── */
+        .admin-nav {
+            background:var(--dark-surface); padding:0.875rem 2rem;
+            display:flex; justify-content:space-between; align-items:center;
+            border-bottom:1px solid var(--glass-border); position:sticky; top:0; z-index:100;
+            gap:1rem;
+        }
+        .nav-brand { display:flex; align-items:center; gap:12px; }
+        .nav-brand-text { display:flex; flex-direction:column; }
+        .nav-brand-text span:first-child { font-weight:700; color:white; font-size:1rem; }
+        .nav-brand-text span:last-child { font-size:0.75rem; color:var(--accent); font-weight:500; text-transform:uppercase; letter-spacing:1px; }
+        .nav-right { display:flex; align-items:center; gap:1.25rem; }
+        #currentUserEmail { font-size:0.875rem; color:var(--gray); }
+        .logout-btn {
+            background:transparent; border:1px solid var(--red); color:var(--red);
+            padding:0.4rem 1.1rem; border-radius:6px; cursor:pointer; font-family:inherit; font-size:0.85rem; transition:var(--transition);
+        }
+        .logout-btn:hover { background:var(--red); color:white; }
+
+        /* ── Layout ── */
+        .portal-layout { display:flex; flex:1; overflow:hidden; height:calc(100vh - 60px); }
+        .sidebar { width:220px; background:var(--dark-surface); border-right:1px solid var(--glass-border); padding:1.5rem 1rem; display:flex; flex-direction:column; gap:0.5rem; flex-shrink:0; }
+        .sidebar-label { font-size:0.7rem; text-transform:uppercase; letter-spacing:1.5px; color:var(--gray); padding:0 0.5rem; margin-top:1rem; margin-bottom:0.25rem; }
+        .sidebar-btn {
+            display:flex; align-items:center; gap:10px; padding:0.6rem 0.75rem; border-radius:8px;
+            cursor:pointer; border:none; background:none; color:var(--slate); font-family:inherit; font-size:0.9rem; text-align:left; transition:var(--transition); width:100%;
+        }
+        .sidebar-btn:hover { background:var(--glass); color:white; }
+        .sidebar-btn.active { background:linear-gradient(135deg, var(--primary), var(--primary-light)); color:white; }
+        .sidebar-btn .icon { font-size:1.1rem; width:20px; text-align:center; }
+
+        /* ── Main Content ── */
+        .main-content { flex:1; overflow-y:auto; padding:2rem; }
+
+        /* ── Stats ── */
+        .stats-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:1.25rem; margin-bottom:2rem; }
+        .stat-card { background:var(--dark-surface); border:1px solid var(--glass-border); border-radius:12px; padding:1.25rem 1.5rem; }
+        .stat-card .label { font-size:0.8rem; color:var(--gray); text-transform:uppercase; letter-spacing:1px; margin-bottom:0.5rem; }
+        .stat-card .value { font-size:1.8rem; font-weight:700; color:white; }
+        .stat-card .value.red { color:var(--red); }
+        .stat-card .value.green { color:var(--green); }
+        .stat-card .value.yellow { color:var(--yellow); }
+        .stat-card .delta { font-size:0.8rem; margin-top:0.25rem; }
+
+        /* ── Section Header ── */
+        .section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:1rem; }
+        .section-header h2 { font-size:1.25rem; color:white; font-weight:600; }
+        .search-box {
+            display:flex; align-items:center; gap:0.5rem; background:var(--dark-surface);
+            border:1px solid var(--glass-border); border-radius:8px; padding:0.5rem 1rem;
+        }
+        .search-box input { background:none; border:none; outline:none; color:white; font-family:inherit; font-size:0.9rem; width:220px; }
+        .search-box input::placeholder { color:var(--gray); }
+
+        .btn-primary {
+            background:linear-gradient(135deg, var(--primary), var(--primary-light)); color:white; border:none;
+            padding:0.55rem 1.25rem; border-radius:8px; cursor:pointer; font-family:inherit; font-size:0.9rem; font-weight:600; transition:var(--transition);
+        }
+        .btn-primary:hover { filter:brightness(1.15); transform:translateY(-1px); }
+
+        /* ── Filters ── */
+        .filters { display:flex; gap:0.5rem; margin-bottom:1.25rem; flex-wrap:wrap; }
+        .filter-chip {
+            padding:0.35rem 1rem; border-radius:50px; font-size:0.85rem; cursor:pointer; transition:var(--transition);
+            background:var(--dark-surface); border:1px solid var(--glass-border); color:var(--gray);
+        }
+        .filter-chip.active { background:var(--primary-light); border-color:var(--primary-light); color:white; }
+        .filter-chip:hover { color:white; border-color:var(--primary-light); }
+
+        /* ── Table ── */
+        .table-wrap { background:var(--dark-surface); border:1px solid var(--glass-border); border-radius:12px; overflow:hidden; }
+        table { width:100%; border-collapse:collapse; }
+        thead th { padding:0.85rem 1.25rem; text-align:left; font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; color:var(--gray); border-bottom:1px solid var(--glass-border); font-weight:500; }
+        tbody tr { transition:background 0.2s; }
+        tbody tr:hover { background:rgba(255,255,255,0.03); }
+        tbody td { padding:1rem 1.25rem; font-size:0.9rem; border-bottom:1px solid rgba(255,255,255,0.04); }
+        tbody tr:last-child td { border-bottom:none; }
+
+        .badge { display:inline-block; padding:0.2rem 0.7rem; border-radius:50px; font-size:0.78rem; font-weight:600; }
+        .badge-red { background:rgba(255,71,87,0.15); color:var(--red); border:1px solid rgba(255,71,87,0.3); }
+        .badge-yellow { background:rgba(255,179,71,0.15); color:var(--yellow); border:1px solid rgba(255,179,71,0.3); }
+        .badge-green { background:rgba(46,213,115,0.15); color:var(--green); border:1px solid rgba(46,213,115,0.3); }
+        .badge-gray { background:rgba(160,174,192,0.15); color:var(--gray); border:1px solid rgba(160,174,192,0.3); }
+
+        .icon-btn { background:var(--glass); border:1px solid var(--glass-border); color:var(--slate); padding:0.3rem 0.65rem; border-radius:6px; cursor:pointer; font-size:0.75rem; transition:var(--transition); font-family:inherit; }
+        .icon-btn:hover { background:var(--primary-light); color:white; border-color:transparent; }
+        .icon-btn.danger:hover { background:var(--red); }
+
+        /* ── Empty State ── */
+        .empty-state { text-align:center; padding:4rem 2rem; color:var(--gray); }
+        .empty-state .big-icon { font-size:3rem; margin-bottom:1rem; }
+
+        /* ── Loading ── */
+        .loading-row td { text-align:center; padding:3rem; color:var(--gray); }
+
+        /* ── Modal ── */
+        .modal-backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:500; align-items:center; justify-content:center; padding:1rem; }
+        .modal-backdrop.open { display:flex; }
+        .modal-box { background:var(--dark-surface); border:1px solid var(--glass-border); border-radius:16px; width:100%; max-width:540px; max-height:90vh; overflow-y:auto; padding:2rem; position:relative; }
+        .modal-box h3 { color:white; margin-bottom:1.5rem; font-size:1.2rem; }
+        .modal-close { position:absolute; top:1rem; right:1.25rem; background:none; border:none; color:var(--gray); font-size:1.5rem; cursor:pointer; transition:var(--transition); }
+        .modal-close:hover { color:white; transform:rotate(90deg); }
+        .form-grid { display:grid; gap:1rem; }
+        .form-grid.two-col { grid-template-columns:1fr 1fr; }
+        .field label { display:block; font-size:0.8rem; color:var(--gray); text-transform:uppercase; letter-spacing:.5px; margin-bottom:0.4rem; font-weight:500; }
+        .field input, .field select, .field textarea {
+            width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); border-radius:8px;
+            color:white; font-family:inherit; font-size:0.9rem; padding:0.65rem 0.9rem; outline:none; transition:var(--transition);
+        }
+        .field input:focus, .field select, .field textarea:focus { border-color:var(--primary-light); box-shadow:0 0 0 3px rgba(82,49,156,0.25); }
+        .field select option { background:#1b1033; }
+        .field textarea { resize:vertical; min-height:80px; }
+        .modal-footer { display:flex; gap:1rem; justify-content:flex-end; margin-top:1.5rem; }
+        .btn-cancel { background:transparent; border:1px solid var(--glass-border); color:var(--gray); padding:0.55rem 1.25rem; border-radius:8px; cursor:pointer; font-family:inherit; font-size:0.9rem; transition:var(--transition); }
+        .btn-cancel:hover { border-color:white; color:white; }
+
+        /* ── Notes Modal ── */
+        .note-entry { background:var(--surface2); border-radius:8px; padding:0.85rem 1rem; margin-bottom:0.75rem; }
+        .note-entry .note-meta { font-size:0.75rem; color:var(--gray); margin-bottom:0.35rem; }
+        .note-entry .note-text { font-size:0.9rem; color:white; }
+
+        /* Responsive */
+        @media(max-width:768px) {
+            .sidebar { display:none; }
+            .main-content { padding:1rem; }
+            .form-grid.two-col { grid-template-columns:1fr; }
+            .admin-nav { padding:0.75rem 1rem; }
+            #currentUserEmail { display:none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Auth Overlay -->
+<div id="authOverlay">
+    <div class="spinner"></div>
+    <p style="color:var(--gray); font-size:0.9rem;">Verificando acceso...</p>
+</div>
+
+<!-- Nav -->
+<nav class="admin-nav">
+    <div class="nav-brand">
+        <svg width="32" height="32" viewBox="0 0 50 50" fill="none">
+            <circle cx="25" cy="25" r="24" fill="#2e1c5b" stroke="#52319c" stroke-width="1.5"/>
+            <path d="M28 34C20.268 34 14 27.732 14 20C14 12.268 20.268 6 28 6C31.86 6 35.37 7.58 37.9 10.13M43 16L33 26L26 19" stroke="#ffb347" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="nav-brand-text">
+            <span>COBRIX</span>
+            <span>Portal Operativo</span>
+        </div>
+    </div>
+    <div class="nav-right">
+        <span id="currentUserEmail"></span>
+        <button id="logoutBtn" class="logout-btn">⏻ Salir</button>
+    </div>
+</nav>
+
+<!-- Layout -->
+<div class="portal-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <span class="sidebar-label">Gestión</span>
+        <button class="sidebar-btn active" data-view="dashboard" onclick="setView('dashboard', this)">
+            <span class="icon">📊</span> Dashboard
+        </button>
+        <button class="sidebar-btn" data-view="casos" onclick="setView('casos', this)">
+            <span class="icon">📋</span> Casos Activos
+        </button>
+        <button class="sidebar-btn" data-view="nuevo" onclick="openNewCasoModal()">
+            <span class="icon">➕</span> Nuevo Caso
+        </button>
+        <span class="sidebar-label">Filtros</span>
+        <button class="sidebar-btn" data-status="Atrasado" onclick="filterByStatus('Atrasado', this)">
+            <span class="icon">🔴</span> Atrasados
+        </button>
+        <button class="sidebar-btn" data-status="En Seguimiento" onclick="filterByStatus('En Seguimiento', this)">
+            <span class="icon">🟡</span> Seguimiento
+        </button>
+        <button class="sidebar-btn" data-status="Al Día" onclick="filterByStatus('Al Día', this)">
+            <span class="icon">🟢</span> Al Día
+        </button>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-content" id="mainContent">
+        <!-- Dashboard View -->
+        <div id="view-dashboard">
+            <div class="section-header" style="margin-bottom:1.5rem;">
+                <h2>Resumen Operativo</h2>
+                <span id="syncDate" style="font-size:0.8rem; color:var(--gray);"></span>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="label">Total Casos</div>
+                    <div class="value" id="statTotal">—</div>
+                    <div class="delta" style="color:var(--gray);">en la base de datos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Monto Total (UYU)</div>
+                    <div class="value red" id="statMonto">—</div>
+                    <div class="delta" style="color:var(--red);">pendiente de cobro</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Casos Atrasados</div>
+                    <div class="value yellow" id="statAtrasados">—</div>
+                    <div class="delta" style="color:var(--yellow);">requieren atención urgente</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">En Seguimiento</div>
+                    <div class="value" id="statSeguimiento" style="color:#a78bfa;">—</div>
+                    <div class="delta" style="color:var(--gray);">contactados esta semana</div>
+                </div>
+            </div>
+
+            <!-- Quick list -->
+            <div class="section-header" style="margin-top:1.5rem; margin-bottom:1rem;">
+                <h2>Casos Urgentes (Atrasados)</h2>
+                <button class="btn-primary" onclick="setView('casos', document.querySelector('[data-view=casos]'))">Ver todos →</button>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>Cliente</th><th>Monto</th><th>Días Retraso</th><th>Estado</th><th>Acción</th>
+                    </tr></thead>
+                    <tbody id="urgentTable">
+                        <tr class="loading-row"><td colspan="5">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Casos View -->
+        <div id="view-casos" style="display:none;">
+            <div class="section-header">
+                <h2 id="casosTitle">Todos los Casos</h2>
+                <div style="display:flex;gap:1rem;align-items:center;">
+                    <div class="search-box">
+                        <span style="color:var(--gray);">🔍</span>
+                        <input type="text" id="searchInput" placeholder="Buscar por nombre o CI..." oninput="renderTable()">
+                    </div>
+                    <button class="btn-primary" onclick="openNewCasoModal()">+ Nuevo Caso</button>
+                </div>
+            </div>
+            <div class="filters">
+                <span class="filter-chip active" onclick="setFilter('todos', this)">Todos</span>
+                <span class="filter-chip" onclick="setFilter('Atrasado', this)">🔴 Atrasados</span>
+                <span class="filter-chip" onclick="setFilter('En Seguimiento', this)">🟡 En Seguimiento</span>
+                <span class="filter-chip" onclick="setFilter('Al Día', this)">🟢 Al Día</span>
+                <span class="filter-chip" onclick="setFilter('Cerrado', this)">⚫ Cerrados</span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>Cliente</th><th>CI / Teléfono</th><th>Comercio</th><th>Monto (UYU)</th><th>Días Retraso</th><th>Estado</th><th>Acciones</th>
+                    </tr></thead>
+                    <tbody id="casosTable">
+                        <tr class="loading-row"><td colspan="7">Cargando datos...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Modal Nuevo Caso -->
+<div class="modal-backdrop" id="newCasoModal">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('newCasoModal')">×</button>
+        <h3 id="modalTitle">➕ Nuevo Caso de Cobranza</h3>
+        <form id="newCasoForm">
+            <div class="form-grid two-col">
+                <div class="field">
+                    <label>Nombre del Deudor *</label>
+                    <input id="f_nombre" type="text" placeholder="Nombre completo" required>
+                </div>
+                <div class="field">
+                    <label>Cédula de Identidad</label>
+                    <input id="f_ci" type="text" placeholder="1.234.567-8">
+                </div>
+                <div class="field">
+                    <label>Teléfono</label>
+                    <input id="f_telefono" type="tel" placeholder="09X XXX XXX">
+                </div>
+                <div class="field">
+                    <label>Comercio Denunciante</label>
+                    <input id="f_comercio" type="text" placeholder="Ej. Almacén Los Amigos">
+                </div>
+                <div class="field">
+                    <label>Monto Deuda (UYU) *</label>
+                    <input id="f_monto" type="number" min="0" step="1" placeholder="0" required>
+                </div>
+                <div class="field">
+                    <label>Días de Atraso</label>
+                    <input id="f_dias" type="number" min="0" placeholder="0">
+                </div>
+                <div class="field" style="grid-column:span 2">
+                    <label>Estado *</label>
+                    <select id="f_estado">
+                        <option value="Atrasado">🔴 Atrasado</option>
+                        <option value="En Seguimiento">🟡 En Seguimiento</option>
+                        <option value="Al Día">🟢 Al Día</option>
+                        <option value="Cerrado">⚫ Cerrado</option>
+                    </select>
+                </div>
+                <div class="field" style="grid-column:span 2">
+                    <label>Nota Inicial</label>
+                    <textarea id="f_nota" placeholder="Observaciones o primer contacto..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeModal('newCasoModal')">Cancelar</button>
+                <button type="submit" class="btn-primary" id="saveCasoBtn">Guardar Caso</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Notas / Gestionar -->
+<div class="modal-backdrop" id="notasModal">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('notasModal')">×</button>
+        <h3 id="notasTitle">Gestionar Caso</h3>
+        <div id="notasContent"></div>
+        <div class="form-grid" style="margin-top:1.25rem;">
+            <div class="field">
+                <label>Cambiar Estado</label>
+                <select id="updateEstado">
+                    <option value="Atrasado">🔴 Atrasado</option>
+                    <option value="En Seguimiento">🟡 En Seguimiento</option>
+                    <option value="Al Día">🟢 Al Día</option>
+                    <option value="Cerrado">⚫ Cerrado</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Agregar Nota</label>
+                <textarea id="newNota" placeholder="Ej: Cliente contactado, promete pagar el viernes..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="closeModal('notasModal')">Cerrar</button>
+            <button class="btn-primary" id="saveNotaBtn">Guardar Cambios</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+    import {
+        getFirestore, collection, getDocs, addDoc, updateDoc, doc,
+        serverTimestamp, query, orderBy
+    } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "CLAVE_REMOVIDA",
+        authDomain: "cobrix-a4479.firebaseapp.com",
+        databaseURL: "https://cobrix-a4479-default-rtdb.firebaseio.com",
+        projectId: "cobrix-a4479",
+        storageBucket: "cobrix-a4479.firebasestorage.app",
+        messagingSenderId: "457065889540",
+        appId: "1:457065889540:web:a07470876b26bfc62eda51",
+        measurementId: "G-NZCBL19XP9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // ─── State ───────────────────────────────
+    let allCasos = [];
+    let activeFilter = 'todos';
+    let editingCasoId = null;
+    let currentNota = null;
+
+    // ─── Auth Guard ───────────────────────────
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            document.getElementById('authOverlay').style.display = 'none';
+            document.getElementById('currentUserEmail').textContent = user.email;
+            loadCasos();
+        } else {
+            window.location.href = 'index.html';
+        }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+        await signOut(auth);
+        window.location.href = 'index.html';
+    });
+
+    // ─── Load Data ────────────────────────────
+    async function loadCasos() {
+        try {
+            const q = query(collection(db, 'casos'), orderBy('createdAt', 'desc'));
+            const snap = await getDocs(q);
+            allCasos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        } catch(e) {
+            // Si Firestore no tiene la colección aún, arrancamos vacíos
+            allCasos = [];
+        }
+        renderStats();
+        renderTable();
+        renderUrgent();
+        document.getElementById('syncDate').textContent =
+            'Última actualización: ' + new Date().toLocaleString('es-UY', { dateStyle:'short', timeStyle:'short' });
+    }
+    window.loadCasos = loadCasos;
+
+    // ─── Stats ────────────────────────────────
+    function renderStats() {
+        const atrasados = allCasos.filter(c => c.estado === 'Atrasado');
+        const seguimiento = allCasos.filter(c => c.estado === 'En Seguimiento');
+        const totalMonto = allCasos.reduce((s, c) => s + (Number(c.monto)||0), 0);
+        document.getElementById('statTotal').textContent = allCasos.length;
+        document.getElementById('statMonto').textContent = '$ ' + totalMonto.toLocaleString('es-UY');
+        document.getElementById('statAtrasados').textContent = atrasados.length;
+        document.getElementById('statSeguimiento').textContent = seguimiento.length;
+    }
+
+    // ─── Urgent ───────────────────────────────
+    function renderUrgent() {
+        const urgent = allCasos.filter(c => c.estado === 'Atrasado').slice(0, 5);
+        const tbody = document.getElementById('urgentTable');
+        if (!urgent.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--gray);padding:2rem;">Sin casos urgentes.</td></tr>'; return; }
+        tbody.innerHTML = urgent.map(c => `
+            <tr>
+                <td><strong>${esc(c.nombre)}</strong></td>
+                <td style="color:var(--red);">$ ${Number(c.monto||0).toLocaleString('es-UY')}</td>
+                <td style="color:var(--red);">${c.dias || '—'} días</td>
+                <td>${statusBadge(c.estado)}</td>
+                <td><button class="icon-btn" onclick="openNotasModal('${c.id}')">Gestionar</button></td>
+            </tr>`).join('');
+    }
+
+    // ─── Table ────────────────────────────────
+    function renderTable() {
+        const search = (document.getElementById('searchInput')?.value || '').toLowerCase();
+        let list = allCasos.filter(c => {
+            const matchFilter = activeFilter === 'todos' || c.estado === activeFilter;
+            const matchSearch = !search || (c.nombre||'').toLowerCase().includes(search) || (c.ci||'').includes(search);
+            return matchFilter && matchSearch;
+        });
+        const tbody = document.getElementById('casosTable');
+        if (!list.length) { tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--gray);padding:3rem;">No se encontraron casos.</td></tr>`; return; }
+        tbody.innerHTML = list.map(c => `
+            <tr>
+                <td><strong>${esc(c.nombre)}</strong></td>
+                <td style="color:var(--gray);">${esc(c.ci||'—')}<br><small>${esc(c.telefono||'—')}</small></td>
+                <td>${esc(c.comercio||'—')}</td>
+                <td style="font-weight:600;color:var(--red);">$ ${Number(c.monto||0).toLocaleString('es-UY')}</td>
+                <td>${c.dias !== undefined ? c.dias + ' días' : '—'}</td>
+                <td>${statusBadge(c.estado)}</td>
+                <td style="display:flex;gap:0.5rem;">
+                    <button class="icon-btn" onclick="openNotasModal('${c.id}')">📝 Gestionar</button>
+                    <button class="icon-btn danger" onclick="confirmDelete('${c.id}')">🗑</button>
+                </td>
+            </tr>`).join('');
+    }
+    window.renderTable = renderTable;
+
+    // ─── New Caso Modal ───────────────────────
+    window.openNewCasoModal = () => {
+        editingCasoId = null;
+        document.getElementById('modalTitle').textContent = '➕ Nuevo Caso de Cobranza';
+        document.getElementById('newCasoForm').reset();
+        document.getElementById('newCasoModal').classList.add('open');
+        setView('casos', document.querySelector('[data-view=casos]'));
+    };
+
+    document.getElementById('newCasoForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('saveCasoBtn');
+        btn.textContent = 'Guardando...'; btn.disabled = true;
+        const data = {
+            nombre: document.getElementById('f_nombre').value.trim(),
+            ci: document.getElementById('f_ci').value.trim(),
+            telefono: document.getElementById('f_telefono').value.trim(),
+            comercio: document.getElementById('f_comercio').value.trim(),
+            monto: Number(document.getElementById('f_monto').value),
+            dias: Number(document.getElementById('f_dias').value) || 0,
+            estado: document.getElementById('f_estado').value,
+            notas: document.getElementById('f_nota').value.trim() ? [{
+                texto: document.getElementById('f_nota').value.trim(),
+                fecha: new Date().toISOString(),
+                autor: document.getElementById('currentUserEmail').textContent
+            }] : [],
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+        };
+        try {
+            await addDoc(collection(db, 'casos'), data);
+            closeModal('newCasoModal');
+            await loadCasos();
+        } catch(err) {
+            alert('Error al guardar: ' + err.message);
+        }
+        btn.textContent = 'Guardar Caso'; btn.disabled = false;
+    });
+
+    // ─── Notas Modal ─────────────────────────
+    window.openNotasModal = (id) => {
+        currentNota = id;
+        const caso = allCasos.find(c => c.id === id);
+        if (!caso) return;
+        document.getElementById('notasTitle').textContent = '📋 ' + caso.nombre;
+        document.getElementById('updateEstado').value = caso.estado || 'Atrasado';
+        document.getElementById('newNota').value = '';
+        // Render notes
+        const notas = caso.notas || [];
+        document.getElementById('notasContent').innerHTML = notas.length ? notas.map(n => `
+            <div class="note-entry">
+                <div class="note-meta">${n.autor || 'Sistema'} · ${n.fecha ? new Date(n.fecha).toLocaleString('es-UY') : ''}</div>
+                <div class="note-text">${esc(n.texto)}</div>
+            </div>`).join('') : '<p style="color:var(--gray);font-size:0.85rem;">Sin notas aún.</p>';
+        document.getElementById('notasModal').classList.add('open');
+    };
+
+    document.getElementById('saveNotaBtn').addEventListener('click', async () => {
+        if (!currentNota) return;
+        const caso = allCasos.find(c => c.id === currentNota);
+        const nuevoEstado = document.getElementById('updateEstado').value;
+        const textoNota = document.getElementById('newNota').value.trim();
+        const updatedNotas = [...(caso.notas || [])];
+        if (textoNota) {
+            updatedNotas.push({
+                texto: textoNota,
+                fecha: new Date().toISOString(),
+                autor: document.getElementById('currentUserEmail').textContent
+            });
+        }
+        try {
+            await updateDoc(doc(db, 'casos', currentNota), {
+                estado: nuevoEstado,
+                notas: updatedNotas,
+                updatedAt: serverTimestamp()
+            });
+            closeModal('notasModal');
+            await loadCasos();
+        } catch(err) { alert('Error: ' + err.message); }
+    });
+
+    // ─── Delete ──────────────────────────────
+    window.confirmDelete = async (id) => {
+        const caso = allCasos.find(c => c.id === id);
+        if (!confirm(`¿Eliminar caso de ${caso?.nombre || 'este deudor'}? Esta acción no se puede deshacer.`)) return;
+        const { deleteDoc } = await import("https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js");
+        try {
+            await deleteDoc(doc(db, 'casos', id));
+            await loadCasos();
+        } catch(err) { alert('Error: ' + err.message); }
+    };
+
+    // ─── Helpers ─────────────────────────────
+    function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function statusBadge(s) {
+        const m = { 'Atrasado':'badge-red', 'En Seguimiento':'badge-yellow', 'Al Día':'badge-green', 'Cerrado':'badge-gray' };
+        return `<span class="badge ${m[s]||'badge-gray'}">${esc(s||'—')}</span>`;
+    }
+
+    // ─── View Switcher ───────────────────────
+    window.setView = (view, el) => {
+        document.querySelectorAll('[id^="view-"]').forEach(v => v.style.display = 'none');
+        document.getElementById('view-' + view).style.display = 'block';
+        document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+        if (el) el.classList.add('active');
+    };
+
+    // ─── Filter ──────────────────────────────
+    window.setFilter = (f, el) => {
+        activeFilter = f;
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        if (el) el.classList.add('active');
+        renderTable();
+    };
+
+    window.filterByStatus = (status, el) => {
+        activeFilter = status;
+        setView('casos', el);
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        document.querySelector(`.filter-chip[onclick*="${status}"]`)?.classList.add('active');
+        renderTable();
+    };
+
+    // ─── Modal helpers ───────────────────────
+    window.closeModal = (id) => document.getElementById(id).classList.remove('open');
+    document.querySelectorAll('.modal-backdrop').forEach(m => {
+        m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+    });
+</script>
+</body>
+</html>

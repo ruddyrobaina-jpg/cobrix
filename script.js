@@ -1,3 +1,20 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "CLAVE_REMOVIDA",
+  authDomain: "cobrix-a4479.firebaseapp.com",
+  databaseURL: "https://cobrix-a4479-default-rtdb.firebaseio.com",
+  projectId: "cobrix-a4479",
+  storageBucket: "cobrix-a4479.firebasestorage.app",
+  messagingSenderId: "457065889540",
+  appId: "1:457065889540:web:a07470876b26bfc62eda51",
+  measurementId: "G-NZCBL19XP9"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
 document.addEventListener('DOMContentLoaded', () => {
     // Reveal animations on scroll
     const reveals = document.querySelectorAll('.reveal');
@@ -116,6 +133,79 @@ document.addEventListener('DOMContentLoaded', () => {
 
             return true; // Let browser submit to iframe
         });
+    }
+
+    // --- Easter Egg: Acceso Administrativo (5 clics rápidos en logo) ---
+    const logoLink = document.querySelector('.logo-link');
+    const adminLoginModal = document.getElementById('adminLoginModal');
+    const closeAdminModalBtns = document.querySelectorAll('.close-admin-modal');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    
+    let logoClickCount = 0;
+    let logoClickTimer = null;
+
+    if (logoLink) {
+        logoLink.addEventListener('click', (e) => {
+            // Prevenir doble ejecución o scroll al clickear rápido
+            if(logoClickCount > 0) e.preventDefault();
+            
+            logoClickCount++;
+            
+            if (logoClickCount >= 5) {
+                // Trigger easter egg
+                if(adminLoginModal) {
+                    adminLoginModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+                logoClickCount = 0; // Reset
+            }
+
+            clearTimeout(logoClickTimer);
+            logoClickTimer = setTimeout(() => {
+                logoClickCount = 0;
+            }, 2000);
+        });
+    }
+
+    if (adminLoginModal) {
+        closeAdminModalBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                adminLoginModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        if(adminLoginForm) {
+            adminLoginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const adminSubmitBtn = document.getElementById('adminSubmitBtn');
+                const btnText = adminSubmitBtn.querySelector('.btn-text');
+                const btnLoader = adminSubmitBtn.querySelector('.btn-loader');
+                const errorDiv = document.getElementById('adminFormError');
+                
+                const email = document.getElementById('adminEmail').value;
+                const password = document.getElementById('adminPass').value;
+
+                // UX: Loading state
+                btnText.style.display = 'none';
+                btnLoader.style.display = 'block';
+                errorDiv.style.display = 'none';
+
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    // Si el login es exitoso, Firebase guarda la sesión.
+                    // Redirigimos al portal administrativo
+                    window.location.href = 'portal.html';
+                } catch (error) {
+                    btnText.style.display = 'block';
+                    btnLoader.style.display = 'none';
+                    errorDiv.style.display = 'block';
+                    errorDiv.textContent = 'Credenciales incorrectas o no autorizadas.';
+                    console.error("Auth error:", error);
+                }
+            });
+        }
     }
 
     // --- Presentation Mode Logic ---
